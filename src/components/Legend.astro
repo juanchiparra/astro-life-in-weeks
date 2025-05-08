@@ -1,0 +1,54 @@
+---
+const { legends } = Astro.props as {
+    legends: { class: string; description: string }[];
+};
+---
+
+<div class="legend">
+    <div class="legend-container">
+        <p>Events</p>
+        {
+            legends.map((legend) => (
+                <div class="legend-item">
+                    <div class={`week ${legend.class}`}>
+                        {legend.description}
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</div>
+
+<style>
+    .legend-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .legend-item .week {
+        height: 32px;
+        border: 1px solid var(--gray5);
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    p {
+        font-size: var(--h3);
+        font-family: var(--font-h);
+        font-weight: var(--font-weight-m);
+        margin: var(--margin-s);
+    }
+</style>

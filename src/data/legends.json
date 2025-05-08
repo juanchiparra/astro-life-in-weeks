@@ -1,0 +1,18 @@
+[
+    {
+        "class": "highlight",
+        "description": "Important milestone"
+    },
+    {
+        "class": "special",
+        "description": "Personal achievement"
+    },
+    {
+        "class": "special2",
+        "description": "Career or education"
+    },
+    {
+        "class": "birthday",
+        "description": "🎉 Birthday"
+    }
+]

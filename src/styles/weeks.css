@@ -1,0 +1,13 @@
+  .highlight {
+    background-color: rgba(128, 128, 128, 0.1);
+  }
+
+  .special {
+    background-color: rgba(231, 143, 249, 0.025);
+    color: #e78ff9;
+  }
+
+  .special2 {
+    background-color: rgba(161, 249, 143, 0.025);
+    color: #a1f98f;
+  }

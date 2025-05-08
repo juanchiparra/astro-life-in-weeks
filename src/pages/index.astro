@@ -1,0 +1,43 @@
+---
+import Weeks from "~/components/Weeks.astro";
+import Layout from "~/layouts/Layout.astro";
+import Legend from "~/components/Legend.astro";
+import weekData from "~/data/weeks.json";
+import sections from "~/data/sections.json";
+import legends from "~/data/legends.json";
+import "~/styles/weeks.css";
+
+// Write here the title of the page
+const pageTitle = "Life of Weeks";
+
+// Write here your date of birth
+const birthDate = "1993-11-27";
+
+// Write here how many years you want to be generated (only when you are not using sections)
+const totalYears = 35;
+---
+
+<Layout pageTitle={pageTitle}>
+	<section id="about" class="center introduction">
+		<p>
+			This is a visual representation of the weeks in a 35-year life span.
+			Each rectangle represents one week.
+		</p>
+	</section>
+
+	<section id="legend" class="center">
+		<Legend legends={legends} />
+	</section>
+
+	<section id="weeks" class="center-x">
+		<!-- If you do not want sections, delete "sections={sections}" -->
+		<!-- If you do not want your birthday to appear, replace the "true" with a "false" -->
+		<Weeks
+			weekData={weekData}
+			birthDate={birthDate}
+			totalYears={totalYears}
+			sections={sections}
+			showBirthdays={true}
+		/>
+	</section>
+</Layout>

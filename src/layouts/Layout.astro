@@ -1,0 +1,37 @@
+---
+import "~/styles/global.css";
+import "~/styles/variables.css";
+
+const { pageTitle } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Life in Weeks</title>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<section class="center">
+			<h1>{pageTitle}</h1>
+		</section>
+		<slot />
+	</body>
+	<footer class="footer">
+		<p>
+			<p>
+				Created with ❤️ by
+				<a href="https://github.com/juanchiparra" class="external">Juanchiparra</a>
+			</p>
+			<p>
+				Source code available
+				<a href="https://github.com/juanchiparra/astro-life-in-weeks" class="external">here</a>
+			</p>
+		</p>
+	</footer>
+</html>
+
