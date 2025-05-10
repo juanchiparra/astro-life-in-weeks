@@ -51,4 +51,26 @@ const { legends } = Astro.props as {
         font-weight: var(--font-weight-m);
         margin: var(--margin-s);
     }
+
+    @media (max-width: 768px) {
+        p {
+            font-size: var(--h3);
+        }
+
+        .legend-item .week {
+            height: 28px;
+            font-size: 0.875rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        p {
+            font-size: var(--h4);
+        }
+
+        .legend-item .week {
+            height: 24px;
+            font-size: 0.75rem;
+        }
+    }
 </style>
