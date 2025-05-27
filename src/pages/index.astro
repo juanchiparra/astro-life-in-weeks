@@ -31,13 +31,15 @@ const totalYears = 35;
 
 	<section id="weeks" class="center-x">
 		<!-- If you do not want sections, delete "sections={sections}" -->
-		<!-- If you do not want your birthday to appear, replace the "true" with a "false" -->
+		<!-- If you do not want your birthday to appear, replace the "true" with a "false" in showBirthdays-->
+		<!-- If you do not want the tooltip to appear when hovering over the weeks, replace the "true" with a "false" in showTooltips -->
 		<Weeks
 			weekData={weekData}
 			birthDate={birthDate}
 			totalYears={totalYears}
 			sections={sections}
 			showBirthdays={true}
+			showTooltips={true}
 		/>
 	</section>
 </Layout>
