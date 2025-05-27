@@ -12,10 +12,10 @@ Inspired by [Buster Benson's](https://busterbenson.com/life-in-weeks) project, w
 - Easy configuration for dynamic data
 - Customizable CSS
 - Responsive design
+- Interactive tooltip
 
 ### For future upgrade
 - Multiple default styles
-- Interactive tooltip 
 
 ## Project structure
 ```
