@@ -5,12 +5,14 @@ const {
   weekData,
   sections,
   showBirthdays = true,
+  showTooltips = false,
 } = Astro.props as {
   birthDate: string;
   totalYears: number;
-  weekData: { week: number; text: string; style: string }[];
+  weekData: { week: number; text: string; style: string; tooltip?: string }[];
   sections?: { title: string; startDate: string; endDate: string }[];
   showBirthdays?: boolean;
+  showTooltips?: boolean;
 };
 
 const startDate = new Date(birthDate);
@@ -37,13 +39,20 @@ const birthdayWeeks = showBirthdays
   : [];
 
 const weekTextMap = new Map(
-  weekData.map((week) => [week.week, { text: week.text, style: week.style }]),
+  weekData.map((week) => [
+    week.week,
+    { text: week.text, style: week.style, tooltip: week.tooltip },
+  ]),
 );
 
 if (showBirthdays) {
   birthdayWeeks.forEach((week, index) => {
     const birthdayNumber = index;
-    weekTextMap.set(week, { text: `🎉 ${birthdayNumber}`, style: "birthday" });
+    weekTextMap.set(week, {
+      text: `🎉 ${birthdayNumber}`,
+      style: "birthday",
+      tooltip: "",
+    });
   });
 }
 ---
@@ -64,16 +73,20 @@ if (showBirthdays) {
                   const weekData = weekTextMap.get(weekNumber) || {
                     text: "",
                     style: "",
+                    tooltip: "",
                   };
                   const text = weekData.text;
                   const style = weekData.style;
+                  const tooltip = weekData.tooltip ?? "";
                   return (
                     <div
                       class={`week ${style}`}
-                      title={`Week ${weekNumber}`}
                       style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
                     >
                       {text && <span>{text}</span>}
+                      {showTooltips && tooltip && (
+                        <span class="tooltip">{tooltip}</span>
+                      )}
                     </div>
                   );
                 },
@@ -89,16 +102,20 @@ if (showBirthdays) {
           const weekData = weekTextMap.get(weekNumber) || {
             text: "",
             style: "",
+            tooltip: "",
           };
           const text = weekData.text;
           const style = weekData.style;
+          const tooltip = weekData.tooltip;
           return (
             <div
               class={`week ${style}`}
-              title={`Week ${weekNumber}`}
               style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
             >
               {text && <span>{text}</span>}
+              {showTooltips && tooltip && (
+                <span class="tooltip">{tooltip}</span>
+              )}
             </div>
           );
         })}
@@ -126,9 +143,7 @@ if (showBirthdays) {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis;
   }
 
   .week span {
@@ -139,5 +154,39 @@ if (showBirthdays) {
     margin-bottom: 1rem;
     font-size: var(--text-l);
     font-weight: 600;
+  }
+
+  .week {
+    position: relative;
+    overflow: visible;
+  }
+
+  .week .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    background: #181616;
+    color: #fff;
+    text-align: center;
+    border: 1px solid var(--gray);
+    border-radius: 4px;
+    padding: 8px 16px;
+    position: absolute;
+    z-index: 1;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: opacity 0.2s;
+    font-size: 0.75rem;
+    pointer-events: none;
+    white-space: pre-line;
+    width: 300px;
+    min-width: 80px;
+    max-width: 300px;
+  }
+
+  .week:hover .tooltip,
+  .week:focus-within .tooltip {
+    visibility: visible;
+    opacity: 1;
   }
 </style>
