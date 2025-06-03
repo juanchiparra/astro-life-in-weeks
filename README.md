@@ -13,9 +13,10 @@ Inspired by [Buster Benson's](https://busterbenson.com/life-in-weeks) project, w
 - Customizable CSS
 - Responsive design
 - Interactive tooltip
+- Multiple default styles
 
 ### For future upgrade
-- Multiple default styles
+- Add a filter to the [demo](https://juanchiparra.github.io/astro-life-in-weeks/) to change the style
 
 ## Project structure
 ```
