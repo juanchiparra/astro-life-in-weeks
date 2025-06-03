@@ -1,74 +1,69 @@
 html {
-	background-color: var(--black);
-	color: var(--white);
-	overflow-x: hidden;
+    overflow-x: hidden;
 }
 
 body {
-	width: 100%;
-	padding: 1rem;
-	line-height: var(--line-height);
-	font-family: var(--font);
+    width: 100%;
+    padding: 1rem;
+    line-height: var(--line-height);
+    font-family: var(--font);
 }
 
 * {
-	box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .introduction p {
-	font-size: var(--text-l);
-	color: var(--gray2);
+    font-size: var(--text-l);
 }
 
 footer {
-	text-align: center;
-	background-color: #181616;
-	padding: 1.4rem;
-	border-radius: 10px;
-	max-width: var(--max-width-m);
-	width: 100%;
-	margin: var(--margin-xl);
+    text-align: center;
+    padding: 1.4rem;
+    border-radius: 10px;
+    max-width: var(--max-width-m);
+    width: 100%;
+    margin: var(--margin-xl);
 }
 
 footer p {
-	font-size: var(--text-s);
-	margin: var(--margin-s);
+    font-size: var(--text-s);
+    margin: var(--margin-s);
 }
 
 a {
-	color: var(--white);
-	text-underline-offset: 0.10rem;
+    color: var(--text);
+    text-underline-offset: 0.1rem;
 }
 
 h1 {
-	margin: 1rem 0;
-	font-size: var(--h1);
-	font-family: var(--font);
-	font-weight: var(--font-weight-m);
+    margin: 1rem 0;
+    font-size: var(--h1);
+    font-family: var(--font);
+    font-weight: var(--font-weight-m);
 }
 
 h2 {
-	font-size: var(--h2);
-	font-family: var(--font);
-	font-weight: var(--font-weight-m);
-	color: var(--white);
+    font-size: var(--h2);
+    font-family: var(--font);
+    font-weight: var(--font-weight-m);
+    color: var(--text);
 }
 
-
 p {
-	font-size: var(--text-m);
-	font-weight: var(--font-weight-s);
-	padding: var(--padding-m);
+    font-size: var(--text-m);
+    font-weight: var(--font-weight-s);
+    padding: var(--padding-m);
 }
 
 .center {
-	max-width: var(--max-width-s);
-	width: 100%;
-	margin: var(--margin-m);
+    max-width: var(--max-width-s);
+    width: 100%;
+    margin: var(--margin-m);
 }
 
 .center-x {
-	max-width: var(--max-width-m);
-	width: 100%;
-	margin: var(--margin-m);
+    max-width: var(--max-width-m);
+    width: 100%;
+    margin: var(--margin-m);
 }
