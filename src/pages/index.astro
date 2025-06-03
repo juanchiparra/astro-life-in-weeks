@@ -17,29 +17,30 @@ const birthDate = "1993-11-27";
 const totalYears = 35;
 ---
 
-<Layout pageTitle={pageTitle}>
-	<section id="about" class="center introduction">
-		<p>
-			This is a visual representation of the weeks in a 35-year life span.
-			Each rectangle represents one week.
-		</p>
-	</section>
+<!-- Change the theme to the one you want to use: dark, light, dracula, atom-dark, gruvbox-dark, gruvbox-light, tokyo-night. You can create your own in variables.css -->
+<Layout pageTitle={pageTitle} theme="dark">
+    <section id="about" class="center introduction">
+        <p>
+            This is a visual representation of the weeks in a 35-year life span.
+            Each rectangle represents one week.
+        </p>
+    </section>
 
-	<section id="legend" class="center">
-		<Legend legends={legends} />
-	</section>
+    <section id="legend" class="center">
+        <Legend legends={legends} />
+    </section>
 
-	<section id="weeks" class="center-x">
-		<!-- If you do not want sections, delete "sections={sections}" -->
-		<!-- If you do not want your birthday to appear, replace the "true" with a "false" in showBirthdays-->
-		<!-- If you do not want the tooltip to appear when hovering over the weeks, replace the "true" with a "false" in showTooltips -->
-		<Weeks
-			weekData={weekData}
-			birthDate={birthDate}
-			totalYears={totalYears}
-			sections={sections}
-			showBirthdays={true}
-			showTooltips={true}
-		/>
-	</section>
+    <section id="weeks" class="center-x">
+        <!-- If you do not want sections, delete "sections={sections}" -->
+        <!-- If you do not want your birthday to appear, replace the "true" with a "false" in showBirthdays-->
+        <!-- If you do not want the tooltip to appear when hovering over the weeks, replace the "true" with a "false" in showTooltips -->
+        <Weeks
+            weekData={weekData}
+            birthDate={birthDate}
+            totalYears={totalYears}
+            sections={sections}
+            showBirthdays={true}
+            showTooltips={true}
+        />
+    </section>
 </Layout>
