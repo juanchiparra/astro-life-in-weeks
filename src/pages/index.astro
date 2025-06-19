@@ -5,6 +5,7 @@ import Legend from "~/components/Legend.astro";
 import weekData from "~/data/weeks.json";
 import sections from "~/data/sections.json";
 import legends from "~/data/legends.json";
+import Theme from "~/components/Theme.astro";
 import "~/styles/weeks.css";
 
 // Write here the title of the page
@@ -15,10 +16,15 @@ const birthDate = "1993-11-27";
 
 // Write here how many years you want to be generated (only when you are not using sections)
 const totalYears = 35;
+
+// Change the theme to the one you want to use: dark, light, dracula, atom-dark, gruvbox-dark, gruvbox-light, tokyo-night. You can create your own in variables.css -->
+const defaultTheme = "dark";
 ---
 
-<!-- Change the theme to the one you want to use: dark, light, dracula, atom-dark, gruvbox-dark, gruvbox-light, tokyo-night. You can create your own in variables.css -->
-<Layout pageTitle={pageTitle} theme="dark">
+<!-- Delete this component if you want a fixed style. If you are going to create a new style, you must also add it in /components/Theme.astro -->
+<Theme theme={defaultTheme} />
+
+<Layout pageTitle={pageTitle} theme={defaultTheme}>
     <section id="about" class="center introduction">
         <p>
             This is a visual representation of the weeks in a 35-year life span.
