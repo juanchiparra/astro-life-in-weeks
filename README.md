@@ -16,7 +16,7 @@ Inspired by [Buster Benson's](https://busterbenson.com/life-in-weeks) project, w
 - Multiple default styles
 
 ### For future upgrade
-- Add a filter to the [demo](https://juanchiparra.github.io/astro-life-in-weeks/) to change the style
+- More default styles
 
 ## Project structure
 ```
