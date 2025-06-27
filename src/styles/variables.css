@@ -103,3 +103,25 @@
     --special2-bg: #9ece6a;
     --special2-text: #1a1b26;
 }
+
+.theme-a11y-dark {
+    --bg: #2b2b2b;
+    --text: #d4d4d4;
+    --border: #393939;
+    --highlight-bg: #393939;
+    --special-bg: #0cd1ba;
+    --special-text: #2b2b2b;
+    --special2-bg: #94c832;
+    --special2-text: #2b2b2b;
+}
+
+.theme-prism-okaidia {
+    --bg: #272822;
+    --text: #f8f8f2;
+    --border: #3e3d32;
+    --highlight-bg: #3e3d32;
+    --special-bg: #a6e22e;
+    --special-text: #272822;
+    --special2-bg: #f92672;
+    --special2-text: #d4d4d4;
+}
