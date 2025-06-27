@@ -8,6 +8,8 @@ const themes = [
     "gruvbox-dark",
     "gruvbox-light",
     "tokyo-night",
+    "a11y-dark",
+    "prism-okaidia",
 ];
 ---
 
@@ -42,3 +44,24 @@ const themes = [
         }
     });
 </script>
+
+<style>
+    label {
+        color: var(--text);
+    }
+    select {
+        padding: 0.25rem;
+        border-radius: 0.25rem;
+        background-color: var(--text);
+        color: var(--bg);
+    }
+
+    select:hover {
+        border-color: none;
+    }
+
+    select:focus {
+        outline: none;
+        border-color: none;
+    }
+</style>
