@@ -125,3 +125,25 @@
     --special2-bg: #f92672;
     --special2-text: #d4d4d4;
 }
+
+.theme-xcode-light {
+    --bg: #fff;
+    --text: #222;
+    --border: #e0e0e0;
+    --highlight-bg: #f7f7f7;
+    --special-bg: #4078f2;
+    --special-text: #fff;
+    --special2-bg: #50a14f;
+    --special2-text: #fff;
+}
+
+.theme-night-owl {
+    --bg: #011627;
+    --text: #d6deeb;
+    --border: #00253b;
+    --highlight-bg: #003554;
+    --special-bg: #82aaff;
+    --special-text: #011627;
+    --special2-bg: #addb67;
+    --special2-text: #011627;
+}
