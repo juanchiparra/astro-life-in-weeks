@@ -38,7 +38,7 @@ astro-life-in-weeks/
 ## Getting started
 ```bash
 # Clone this repository
-git clone https://github.com/tu-usuario/astro-life-in-weeks.git
+git clone https://github.com/juanchiparra/astro-life-in-weeks.git
 cd astro-life-in-weeks
     
 ## Install the dependencies
