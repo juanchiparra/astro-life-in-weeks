@@ -147,3 +147,25 @@
     --special2-bg: #addb67;
     --special2-text: #011627;
 }
+
+.theme-nord {
+    --bg: #2e3440;
+    --text: #d8dee9;
+    --border: #414a5b;
+    --highlight-bg: #434c5e;
+    --special-bg: #5e81ac;
+    --special-text: #eceff4;
+    --special2-bg: #a3be8c;
+    --special2-text: #2e3440;
+}
+
+.theme-github-dark {
+    --bg: #0d1117;
+    --text: #e6edf3;
+    --border: #25292f;
+    --highlight-bg: #30363d;
+    --special-bg: #79c0ff;
+    --special-text: #0d1117;
+    --special2-bg: #d2a8ff;
+    --special2-text: #0d1117;
+}
