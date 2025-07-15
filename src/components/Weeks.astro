@@ -57,12 +57,6 @@ function getBirthdayWeeks() {
     });
 }
 
-function ImagePath(image?: string) {
-    if (!image) return undefined;
-    const fileName = image.substring(image.lastIndexOf("/") + 1);
-    return `/src/data/images/${fileName}`;
-}
-
 const weekTextMap = new Map(
     weekData.map((week) => [
         week.week,
@@ -70,7 +64,7 @@ const weekTextMap = new Map(
             text: week.text,
             style: week.style,
             tooltip: week.tooltip,
-            image: ImagePath(week.image),
+            image: week.image,
         },
     ])
 );
