@@ -9,7 +9,8 @@
         "week": 55,
         "text": "Sit amet consectetur",
         "style": "special",
-        "tooltip": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        "tooltip": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "image": "favicon.svg"
     },
     {
         "week": 85,
@@ -57,7 +58,8 @@
         "week": 295,
         "text": "Ullamco laboris nisi",
         "style": "highlight",
-        "tooltip": "Nullam varius, turpis et commodo pharetra, est eros bibendum elit."
+        "tooltip": "Nullam varius, turpis et commodo pharetra, est eros bibendum elit.",
+        "image": "favicon.svg"
     },
     {
         "week": 325,
