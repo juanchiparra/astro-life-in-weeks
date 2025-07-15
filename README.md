@@ -61,6 +61,7 @@ npm run dev
   - Legend.astro
   - Weeks.astro
 - /data
+  - /images
   - legends.json
   - sections.json
   - weeks.json
