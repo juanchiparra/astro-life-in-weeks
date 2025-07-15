@@ -9,50 +9,80 @@ const {
 } = Astro.props as {
     birthDate: string;
     totalYears: number;
-    weekData: { week: number; text: string; style: string; tooltip?: string }[];
+    weekData: {
+        week: number;
+        text: string;
+        style: string;
+        tooltip?: string;
+        image?: string;
+    }[];
     sections?: { title: string; startDate: string; endDate: string }[];
     showBirthdays?: boolean;
     showTooltips?: boolean;
 };
 
-const startDate = new Date(birthDate);
-startDate.setHours(0, 0, 0, 0);
+const MSPerWeek = 7 * 24 * 60 * 60 * 1000;
+const WeeksPerYear = 52.1775;
 
-const weekNumber = (date: string) => {
-    const targetDate = new Date(date);
-    const diffInMs = targetDate.getTime() - startDate.getTime();
-    return Math.floor(diffInMs / (7 * 24 * 60 * 60 * 1000)) + 1;
-};
+function getStartDate(dateStr: string) {
+    const d = new Date(dateStr);
+    d.setHours(0, 0, 0, 0);
+    return d;
+}
+
+const startDate = getStartDate(birthDate);
+
+function weekNumber(date: string) {
+    return (
+        Math.floor(
+            (new Date(date).getTime() - startDate.getTime()) / MSPerWeek
+        ) + 1
+    );
+}
 
 const totalWeeks = sections
     ? Math.max(...sections.map((section) => weekNumber(section.endDate)))
-    : Math.ceil(52.1775 * totalYears);
+    : Math.ceil(WeeksPerYear * totalYears);
 
-const birthdayWeeks = showBirthdays
-    ? Array.from({ length: Math.ceil(totalWeeks / 52.1775) }).map((_, year) => {
-          const birthday = new Date(startDate);
-          birthday.setFullYear(startDate.getFullYear() + year);
-          const diffInMs = birthday.getTime() - startDate.getTime();
-          const weekNumber =
-              Math.floor(diffInMs / (7 * 24 * 60 * 60 * 1000)) + 1;
-          return weekNumber;
-      })
-    : [];
+function getBirthdayWeeks() {
+    if (!showBirthdays) return [];
+    const years = Math.ceil(totalWeeks / WeeksPerYear);
+    return Array.from({ length: years }, (_, year) => {
+        const birthday = new Date(startDate);
+        birthday.setFullYear(startDate.getFullYear() + year);
+        return (
+            Math.floor((birthday.getTime() - startDate.getTime()) / MSPerWeek) +
+            1
+        );
+    });
+}
+
+function ImagePath(image?: string) {
+    if (!image) return undefined;
+    const fileName = image.substring(image.lastIndexOf("/") + 1);
+    return `/src/data/images/${fileName}`;
+}
 
 const weekTextMap = new Map(
     weekData.map((week) => [
         week.week,
-        { text: week.text, style: week.style, tooltip: week.tooltip },
+        {
+            text: week.text,
+            style: week.style,
+            tooltip: week.tooltip,
+            image: ImagePath(week.image),
+        },
     ])
 );
 
+const birthdayWeeks = getBirthdayWeeks();
 if (showBirthdays) {
     birthdayWeeks.forEach((week, index) => {
-        const birthdayNumber = index;
         weekTextMap.set(week, {
-            text: `🎉 ${birthdayNumber}`,
+            text: `🎉 ${index}`,
             style: "birthday",
             tooltip: "",
+            image: undefined,
         });
     });
 }
@@ -68,58 +98,74 @@ if (showBirthdays) {
                     <div class="section">
                         <h3>{section.title}</h3>
                         <div class="weeks">
-                            {Array.from({
-                                length: endWeek - startWeek + 1,
-                            }).map((_, index) => {
-                                const weekNumber = startWeek + index;
-                                const weekData = weekTextMap.get(
-                                    weekNumber
-                                ) || {
-                                    text: "",
-                                    style: "",
-                                    tooltip: "",
-                                };
-                                const text = weekData.text;
-                                const style = weekData.style;
-                                const tooltip = weekData.tooltip ?? "";
-                                return (
-                                    <div
-                                        class={`week ${style}`}
-                                        style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
-                                    >
-                                        {text && <span>{text}</span>}
-                                        {showTooltips && tooltip && (
-                                            <span class="tooltip">
-                                                {tooltip}
-                                            </span>
-                                        )}
-                                    </div>
-                                );
-                            })}
+                            {Array.from(
+                                { length: endWeek - startWeek + 1 },
+                                (_, i) => {
+                                    const weekNum = startWeek + i;
+                                    const weekData = weekTextMap.get(
+                                        weekNum
+                                    ) || {
+                                        text: "",
+                                        style: "",
+                                        tooltip: "",
+                                        image: undefined,
+                                    };
+                                    const {
+                                        text,
+                                        style,
+                                        tooltip = "",
+                                        image,
+                                    } = weekData;
+                                    return (
+                                        <div
+                                            class={`week ${style}`}
+                                            style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
+                                        >
+                                            {text && <span>{text}</span>}
+                                            {showTooltips &&
+                                                (tooltip || image) && (
+                                                    <span class="tooltip">
+                                                        {tooltip}
+                                                        {image && (
+                                                            <img
+                                                                src={image}
+                                                                alt="Tooltip image"
+                                                            />
+                                                        )}
+                                                    </span>
+                                                )}
+                                        </div>
+                                    );
+                                }
+                            )}
                         </div>
                     </div>
                 );
             })
         ) : (
             <div class="weeks">
-                {Array.from({ length: totalWeeks }).map((_, index) => {
-                    const weekNumber = index + 1;
-                    const weekData = weekTextMap.get(weekNumber) || {
+                {Array.from({ length: totalWeeks }, (_, i) => {
+                    const weekNum = i + 1;
+                    const weekData = weekTextMap.get(weekNum) || {
                         text: "",
                         style: "",
                         tooltip: "",
+                        image: undefined,
                     };
-                    const text = weekData.text;
-                    const style = weekData.style;
-                    const tooltip = weekData.tooltip;
+                    const { text, style, tooltip = "", image } = weekData;
                     return (
                         <div
                             class={`week ${style}`}
                             style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
                         >
                             {text && <span>{text}</span>}
-                            {showTooltips && tooltip && (
-                                <span class="tooltip">{tooltip}</span>
+                            {showTooltips && (tooltip || image) && (
+                                <span class="tooltip">
+                                    {tooltip}
+                                    {image && (
+                                        <img src={image} alt="Tooltip image" />
+                                    )}
+                                </span>
                             )}
                         </div>
                     );
@@ -149,6 +195,8 @@ if (showBirthdays) {
         align-items: center;
         justify-content: center;
         white-space: nowrap;
+        position: relative;
+        overflow: visible;
     }
 
     .week span {
@@ -159,11 +207,6 @@ if (showBirthdays) {
         margin-bottom: 1rem;
         font-size: var(--text-l);
         font-weight: 600;
-    }
-
-    .week {
-        position: relative;
-        overflow: visible;
     }
 
     .week .tooltip {
@@ -187,6 +230,14 @@ if (showBirthdays) {
         width: 300px;
         min-width: 80px;
         max-width: 300px;
+    }
+
+    .week .tooltip img {
+        display: block;
+        max-width: 120px;
+        height: auto;
+        margin: 8px auto 0 auto;
+        border-radius: 4px;
     }
 
     .week:hover .tooltip,
