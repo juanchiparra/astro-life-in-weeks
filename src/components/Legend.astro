@@ -4,20 +4,24 @@ const { legends } = Astro.props as {
 };
 ---
 
-<div class="legend">
-    <div class="legend-container">
-        <p>Events</p>
+<section class="legend" aria-labelledby="legend-title">
+    <div class="legend-container" role="list">
+        <p tabindex="0" aria-label="Legend" id="legend-title">Events</p>
         {
             legends.map((legend) => (
-                <div class="legend-item">
-                    <div class={`week ${legend.class}`}>
+                <div class="legend-item" role="listitem">
+                    <div
+                        class={`week ${legend.class}`}
+                        tabindex="0"
+                        aria-label={legend.description}
+                    >
                         {legend.description}
                     </div>
                 </div>
             ))
         }
     </div>
-</div>
+</section>
 
 <style>
     .legend-container {
@@ -72,5 +76,9 @@ const { legends } = Astro.props as {
             height: 24px;
             font-size: 0.75rem;
         }
+    }
+
+    .week:focus {
+        outline-offset: 2px;
     }
 </style>
