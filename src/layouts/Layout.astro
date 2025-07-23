@@ -20,7 +20,7 @@ const { pageTitle, theme = "dark" } = Astro.props;
     </head>
     <body class={`theme-${theme}`}>
         <section class="center">
-            <h1>{pageTitle}</h1>
+            <h1 tabindex="0" aria-label="Title">{pageTitle}</h1>
         </section>
         <slot />
     </body>
