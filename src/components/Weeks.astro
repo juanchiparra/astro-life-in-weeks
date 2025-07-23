@@ -82,16 +82,25 @@ if (showBirthdays) {
 }
 ---
 
-<div class="weeks-container">
+<section class="weeks-container" aria-labelledby="weeks-title">
     {
         sections ? (
             sections.map((section) => {
                 const startWeek = weekNumber(section.startDate);
                 const endWeek = weekNumber(section.endDate);
                 return (
-                    <div class="section">
-                        <h3>{section.title}</h3>
-                        <div class="weeks">
+                    <section
+                        class="section"
+                        aria-labelledby={`section-title-${section.title}`}
+                    >
+                        <h3
+                            id={`section-title-${section.title}`}
+                            tabindex="0"
+                            aria-label="Section title"
+                        >
+                            {section.title}
+                        </h3>
+                        <div class="weeks" role="list">
                             {Array.from(
                                 { length: endWeek - startWeek + 1 },
                                 (_, i) => {
@@ -114,16 +123,34 @@ if (showBirthdays) {
                                         <div
                                             class={`week ${style}`}
                                             style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
+                                            tabindex="0"
+                                            role="listitem"
+                                            aria-label={
+                                                tooltip
+                                                    ? tooltip
+                                                    : text
+                                                      ? text
+                                                      : `Week ${weekNum}`
+                                            }
                                         >
                                             {text && <span>{text}</span>}
                                             {showTooltips &&
                                                 (tooltip || image) && (
-                                                    <span class="tooltip">
+                                                    <span
+                                                        class="tooltip"
+                                                        role="tooltip"
+                                                    >
                                                         {tooltip}
                                                         {image && (
                                                             <img
                                                                 src={image}
-                                                                alt="Tooltip image"
+                                                                alt={
+                                                                    tooltip
+                                                                        ? tooltip
+                                                                        : text
+                                                                          ? text
+                                                                          : `Week ${weekNum}`
+                                                                }
                                                             />
                                                         )}
                                                     </span>
@@ -133,11 +160,11 @@ if (showBirthdays) {
                                 }
                             )}
                         </div>
-                    </div>
+                    </section>
                 );
             })
         ) : (
-            <div class="weeks">
+            <div class="weeks" role="list">
                 {Array.from({ length: totalWeeks }, (_, i) => {
                     const weekNum = i + 1;
                     const weekData = weekTextMap.get(weekNum) || {
@@ -151,13 +178,31 @@ if (showBirthdays) {
                         <div
                             class={`week ${style}`}
                             style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
+                            tabindex="0"
+                            role="listitem"
+                            aria-label={
+                                tooltip
+                                    ? tooltip
+                                    : text
+                                      ? text
+                                      : `Week ${weekNum}`
+                            }
                         >
                             {text && <span>{text}</span>}
                             {showTooltips && (tooltip || image) && (
-                                <span class="tooltip">
+                                <span class="tooltip" role="tooltip">
                                     {tooltip}
                                     {image && (
-                                        <img src={image} alt="Tooltip image" />
+                                        <img
+                                            src={image}
+                                            alt={
+                                                tooltip
+                                                    ? tooltip
+                                                    : text
+                                                      ? text
+                                                      : `Week ${weekNum}`
+                                            }
+                                        />
                                     )}
                                 </span>
                             )}
@@ -167,7 +212,7 @@ if (showBirthdays) {
             </div>
         )
     }
-</div>
+</section>
 
 <style>
     .weeks-container {
