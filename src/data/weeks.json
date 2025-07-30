@@ -10,7 +10,7 @@
         "text": "Sit amet consectetur",
         "style": "special",
         "tooltip": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        "image": "favicon.svg"
+        "image": "/astro-life-in-weeks/images/oliver-andres-parra-01.jpg"
     },
     {
         "week": 85,
@@ -59,7 +59,7 @@
         "text": "Ullamco laboris nisi",
         "style": "highlight",
         "tooltip": "Nullam varius, turpis et commodo pharetra, est eros bibendum elit.",
-        "image": "favicon.svg"
+        "image": "/astro-life-in-weeks/images/oliver-andres-parra-02.jpg"
     },
     {
         "week": 325,
