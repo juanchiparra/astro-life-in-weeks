@@ -16,20 +16,19 @@ const { pageTitle, theme = "dark" } = Astro.props;
             href="/astro-life-in-weeks/favicon.svg"
         />
         <meta name="generator" content={Astro.generator} />
-        <title>Life in Weeks</title>
+        <title>{pageTitle}</title>
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600&display=swap"
             rel="stylesheet"
         />
     </head>
     <body class={`theme-${theme}`}>
+        <slot name="theme" />
         <section class="center">
             <h1 tabindex="0" aria-label="Title">{pageTitle}</h1>
         </section>
         <slot />
-    </body>
-    <footer class="footer">
-        <p>
+        <footer class="footer">
             <p>
                 Created with ❤️ by
                 <a href="https://github.com/juanchiparra" class="external"
@@ -43,6 +42,6 @@ const { pageTitle, theme = "dark" } = Astro.props;
                     class="external">here</a
                 >
             </p>
-        </p>
-    </footer>
+        </footer>
+    </body>
 </html>
