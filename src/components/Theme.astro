@@ -17,7 +17,7 @@ const themes = [
 ];
 ---
 
-<div style="display: flex; justify-content: flex-end; margin: 1rem;">
+<div class="theme-selector">
     <label for="theme-select">Choose a style </label>
     <select id="theme-select" style="margin-left: 0.5rem;">
         {
@@ -50,14 +50,26 @@ const themes = [
 </script>
 
 <style>
+    .theme-selector {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background: transparent;
+    }
+
     label {
         color: var(--text);
     }
+
     select {
         padding: 0.25rem;
         border-radius: 0.25rem;
         background-color: var(--text);
         color: var(--bg);
+        margin-left: 0.5rem;
     }
 
     select:hover {
