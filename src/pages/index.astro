@@ -21,10 +21,8 @@ const totalYears = 35;
 const defaultTheme = "dark";
 ---
 
-<!-- Delete this component if you want a fixed style. If you are going to create a new style, you must also add it in /components/Theme.astro -->
-<Theme theme={defaultTheme} />
-
 <Layout pageTitle={pageTitle} theme={defaultTheme}>
+    <Theme theme={defaultTheme} slot="theme" />
     <section id="about" class="center introduction">
         <p>
             This is a visual representation of the weeks in a 35-year life span.
