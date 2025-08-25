@@ -31,22 +31,38 @@ const themes = [
 </div>
 
 <script>
-    const select = document.getElementById(
-        "theme-select"
-    ) as HTMLSelectElement | null;
+    const select = document.getElementById("theme-select");
+    const selectedTheme = "life-in-weeks:theme";
+
     function setTheme(theme: string) {
         document.body.className = "";
         document.body.classList.add(`theme-${theme}`);
+        try {
+            localStorage.setItem(selectedTheme, theme);
+        } catch {}
     }
-    if (select && !document.body.classList.contains(`theme-${select.value}`)) {
-        setTheme(select.value);
-    }
-    select?.addEventListener("change", (e) => {
-        const target = e.target as HTMLSelectElement | null;
-        if (target) {
-            setTheme(target.value);
+
+    const saved = (() => {
+        try {
+            return localStorage.getItem(selectedTheme);
+        } catch {
+            return null;
         }
-    });
+    })();
+
+    const initial =
+        saved || (select ? (select as HTMLSelectElement).value : "dark");
+    if (initial && !document.body.classList.contains(`theme-${initial}`)) {
+        setTheme(initial);
+        if (select) (select as HTMLSelectElement).value = initial;
+    }
+
+    if (select) {
+        select.addEventListener("change", (e) => {
+            const target = e.target as HTMLSelectElement;
+            if (target) setTheme(target.value);
+        });
+    }
 </script>
 
 <style>
