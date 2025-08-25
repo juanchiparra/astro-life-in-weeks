@@ -30,6 +30,13 @@ function getStartDate(dateStr: string) {
     return d;
 }
 
+function slugify(input: string) {
+    return input
+        .toLowerCase()
+        .trim()
+        .replace(/[\s_]+/g, "-")
+        .replace(/[^\w-]+/g, "");
+}
 const startDate = getStartDate(birthDate);
 
 function weekNumber(date: string) {
@@ -47,7 +54,8 @@ const totalWeeks = sections
 function getBirthdayWeeks() {
     if (!showBirthdays) return [];
     const years = Math.ceil(totalWeeks / WeeksPerYear);
-    return Array.from({ length: years }, (_, year) => {
+    return Array.from({ length: Math.max(0, years - 1) }, (_, i) => {
+        const year = i + 1;
         const birthday = new Date(startDate);
         birthday.setFullYear(startDate.getFullYear() + year);
         return (
@@ -71,13 +79,25 @@ const weekTextMap = new Map(
 
 const birthdayWeeks = getBirthdayWeeks();
 if (showBirthdays) {
-    birthdayWeeks.forEach((week, index) => {
-        weekTextMap.set(week, {
-            text: `🎉 ${index}`,
-            style: "birthday",
-            tooltip: "",
+    const birthWeek = weekNumber(birthDate);
+    if (!weekTextMap.has(birthWeek)) {
+        weekTextMap.set(birthWeek, {
+            text: "👶",
+            style: "born",
+            tooltip: "Birth week",
             image: undefined,
         });
+    }
+
+    birthdayWeeks.forEach((week, index) => {
+        if (!weekTextMap.has(week)) {
+            weekTextMap.set(week, {
+                text: `🎉 ${index + 1}`,
+                style: "birthday",
+                tooltip: `Birthday ${index + 1}`,
+                image: undefined,
+            });
+        }
     });
 }
 ---
@@ -91,10 +111,10 @@ if (showBirthdays) {
                 return (
                     <section
                         class="section"
-                        aria-labelledby={`section-title-${section.title}`}
+                        aria-labelledby={`section-title-${slugify(section.title)}`}
                     >
                         <h3
-                            id={`section-title-${section.title}`}
+                            id={`section-title-${slugify(section.title)}`}
                             tabindex="0"
                             aria-label="Section title"
                         >
@@ -137,7 +157,7 @@ if (showBirthdays) {
                                             {showTooltips &&
                                                 (tooltip || image) && (
                                                     <span
-                                                        class="tooltip"
+                                                        class={`tooltip ${image ? "has-image" : "text-only"}`}
                                                         role="tooltip"
                                                     >
                                                         {tooltip}
@@ -190,7 +210,10 @@ if (showBirthdays) {
                         >
                             {text && <span>{text}</span>}
                             {showTooltips && (tooltip || image) && (
-                                <span class="tooltip" role="tooltip">
+                                <span
+                                    class={`tooltip ${image ? "has-image" : "text-only"}`}
+                                    role="tooltip"
+                                >
                                     {tooltip}
                                     {image && (
                                         <img
@@ -229,7 +252,7 @@ if (showBirthdays) {
 
     .week {
         height: 32px;
-        border: 1px solid var(--gray);
+        border: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -256,19 +279,30 @@ if (showBirthdays) {
         text-align: center;
         border: 1px solid var(--border);
         border-radius: 4px;
-        padding: 8px 16px;
         position: absolute;
         z-index: 1;
         bottom: 115%;
         left: 50%;
         transform: translateX(-50%);
         transition: opacity 0.2s;
-        font-size: 0.75rem;
         pointer-events: none;
         white-space: pre-line;
-        width: 300px;
+    }
+
+    .week .tooltip.text-only {
+        padding: 6px 10px;
+        font-size: 0.7rem;
         min-width: 80px;
+        max-width: 220px;
+        width: max-content;
+    }
+
+    .week .tooltip.has-image {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+        min-width: 120px;
         max-width: 300px;
+        width: 300px;
     }
 
     .week .tooltip img {
@@ -292,6 +326,7 @@ if (showBirthdays) {
     }
 
     .week {
+        height: 32px;
         border: 1px solid var(--border);
     }
 </style>
