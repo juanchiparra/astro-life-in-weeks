@@ -1,4 +1,16 @@
 ---
+import type { WeekItem, SectionItem } from "../types";
+import {
+    MS_PER_WEEK,
+    getStartDate as utilGetStartDate,
+    startOfISOWeek,
+    formatDate,
+    getWeekStartDate as utilGetWeekStartDate,
+    weekNumberFromDateISO,
+    weekNumberFromStringISO,
+    getBirthdayWeeks as utilGetBirthdayWeeks,
+} from "../utils/date";
+
 const {
     birthDate,
     totalYears,
@@ -9,26 +21,15 @@ const {
 } = Astro.props as {
     birthDate: string;
     totalYears: number;
-    weekData: {
-        week: number;
-        text: string;
-        style: string;
-        tooltip?: string;
-        image?: string;
-    }[];
-    sections?: { title: string; startDate: string; endDate: string }[];
+    weekData: WeekItem[];
+    sections?: SectionItem[];
     showBirthdays?: boolean;
     showTooltips?: boolean;
 };
 
-const MSPerWeek = 7 * 24 * 60 * 60 * 1000;
 const WeeksPerYear = 52.1775;
 
-function getStartDate(dateStr: string) {
-    const d = new Date(dateStr);
-    d.setHours(0, 0, 0, 0);
-    return d;
-}
+const startDate = utilGetStartDate(birthDate);
 
 function slugify(input: string) {
     return input
@@ -37,32 +38,28 @@ function slugify(input: string) {
         .replace(/[\s_]+/g, "-")
         .replace(/[^\w-]+/g, "");
 }
-const startDate = getStartDate(birthDate);
+
+function getWeekStartDateLocal(weekNum: number) {
+    return utilGetWeekStartDate(startDate, weekNum);
+}
+
+const todayWeek = weekNumberFromDateISO(startDate, new Date());
 
 function weekNumber(date: string) {
-    return (
-        Math.floor(
-            (new Date(date).getTime() - startDate.getTime()) / MSPerWeek
-        ) + 1
-    );
+    return weekNumberFromStringISO(startDate, date);
 }
 
 const totalWeeks = sections
-    ? Math.max(...sections.map((section) => weekNumber(section.endDate)))
+    ? Math.max(
+          ...(sections as SectionItem[]).map((section) =>
+              weekNumber(section.endDate)
+          )
+      )
     : Math.ceil(WeeksPerYear * totalYears);
 
-function getBirthdayWeeks() {
+function getBirthdayWeeksLocal() {
     if (!showBirthdays) return [];
-    const years = Math.ceil(totalWeeks / WeeksPerYear);
-    return Array.from({ length: Math.max(0, years - 1) }, (_, i) => {
-        const year = i + 1;
-        const birthday = new Date(startDate);
-        birthday.setFullYear(startDate.getFullYear() + year);
-        return (
-            Math.floor((birthday.getTime() - startDate.getTime()) / MSPerWeek) +
-            1
-        );
-    });
+    return utilGetBirthdayWeeks(startDate, totalWeeks);
 }
 
 const weekTextMap = new Map(
@@ -77,7 +74,7 @@ const weekTextMap = new Map(
     ])
 );
 
-const birthdayWeeks = getBirthdayWeeks();
+const birthdayWeeks = getBirthdayWeeksLocal();
 if (showBirthdays) {
     const birthWeek = weekNumber(birthDate);
     if (!weekTextMap.has(birthWeek)) {
@@ -102,7 +99,11 @@ if (showBirthdays) {
 }
 ---
 
-<section class="weeks-container" aria-labelledby="weeks-title">
+<section
+    class="weeks-container"
+    aria-labelledby="weeks-title"
+    data-start-date={birthDate}
+>
     {
         sections ? (
             sections.map((section) => {
@@ -125,48 +126,66 @@ if (showBirthdays) {
                                 { length: endWeek - startWeek + 1 },
                                 (_, i) => {
                                     const weekNum = startWeek + i;
-                                    const weekData = weekTextMap.get(
-                                        weekNum
-                                    ) || {
+                                    const wk = weekTextMap.get(weekNum) || {
                                         text: "",
                                         style: "",
                                         tooltip: "",
-                                        image: undefined,
+                                        image: undefined as string | undefined,
                                     };
                                     const {
                                         text,
                                         style,
                                         tooltip = "",
                                         image,
-                                    } = weekData;
+                                    } = wk;
+                                    const stateClass =
+                                        weekNum < todayWeek
+                                            ? "past"
+                                            : weekNum === todayWeek
+                                              ? "today"
+                                              : "future";
+                                    const isBirthdayStyle =
+                                        style === "birthday" ||
+                                        style === "born";
+                                    const tooltipText =
+                                        tooltip ||
+                                        (!isBirthdayStyle
+                                            ? `Starts: ${formatDate(startOfISOWeek(getWeekStartDateLocal(weekNum)))}`
+                                            : "");
                                     return (
                                         <div
-                                            class={`week ${style}`}
+                                            class={`week ${style} ${stateClass}`}
                                             style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
                                             tabindex="0"
                                             role="listitem"
+                                            data-week={weekNum}
                                             aria-label={
-                                                tooltip
-                                                    ? tooltip
+                                                tooltipText
+                                                    ? tooltipText
                                                     : text
                                                       ? text
                                                       : `Week ${weekNum}`
                                             }
+                                            aria-current={
+                                                weekNum === todayWeek
+                                                    ? "date"
+                                                    : undefined
+                                            }
                                         >
                                             {text && <span>{text}</span>}
                                             {showTooltips &&
-                                                (tooltip || image) && (
+                                                (tooltipText || image) && (
                                                     <span
                                                         class={`tooltip ${image ? "has-image" : "text-only"}`}
                                                         role="tooltip"
                                                     >
-                                                        {tooltip}
+                                                        {tooltipText}
                                                         {image && (
                                                             <img
                                                                 src={image}
                                                                 alt={
-                                                                    tooltip
-                                                                        ? tooltip
+                                                                    tooltipText
+                                                                        ? tooltipText
                                                                         : text
                                                                           ? text
                                                                           : `Week ${weekNum}`
@@ -187,40 +206,57 @@ if (showBirthdays) {
             <div class="weeks" role="list">
                 {Array.from({ length: totalWeeks }, (_, i) => {
                     const weekNum = i + 1;
-                    const weekData = weekTextMap.get(weekNum) || {
+                    const wk = weekTextMap.get(weekNum) || {
                         text: "",
                         style: "",
                         tooltip: "",
-                        image: undefined,
+                        image: undefined as string | undefined,
                     };
-                    const { text, style, tooltip = "", image } = weekData;
+                    const { text, style, tooltip = "", image } = wk;
+                    const stateClass =
+                        weekNum < todayWeek
+                            ? "past"
+                            : weekNum === todayWeek
+                              ? "today"
+                              : "future";
+                    const isBirthdayStyle =
+                        style === "birthday" || style === "born";
+                    const tooltipText =
+                        tooltip ||
+                        (!isBirthdayStyle
+                            ? `Starts: ${formatDate(startOfISOWeek(getWeekStartDateLocal(weekNum)))}`
+                            : "");
                     return (
                         <div
-                            class={`week ${style}`}
+                            class={`week ${style} ${stateClass}`}
                             style={`flex: ${text ? "0 1 auto" : "0 0 15px"};`}
                             tabindex="0"
                             role="listitem"
+                            data-week={weekNum}
                             aria-label={
-                                tooltip
-                                    ? tooltip
+                                tooltipText
+                                    ? tooltipText
                                     : text
                                       ? text
                                       : `Week ${weekNum}`
                             }
+                            aria-current={
+                                weekNum === todayWeek ? "date" : undefined
+                            }
                         >
                             {text && <span>{text}</span>}
-                            {showTooltips && (tooltip || image) && (
+                            {showTooltips && (tooltipText || image) && (
                                 <span
                                     class={`tooltip ${image ? "has-image" : "text-only"}`}
                                     role="tooltip"
                                 >
-                                    {tooltip}
+                                    {tooltipText}
                                     {image && (
                                         <img
                                             src={image}
                                             alt={
-                                                tooltip
-                                                    ? tooltip
+                                                tooltipText
+                                                    ? tooltipText
                                                     : text
                                                       ? text
                                                       : `Week ${weekNum}`
@@ -236,6 +272,38 @@ if (showBirthdays) {
         )
     }
 </section>
+
+<script type="module">
+    import {
+        getStartDate as utilGetStartDate,
+        weekNumberFromDateISO,
+    } from "../utils/date";
+    (function () {
+        const container = document.querySelector(".weeks-container");
+        if (!container) return;
+        const startStr = container.getAttribute("data-start-date");
+        if (!startStr) return;
+        const start = utilGetStartDate(startStr);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const todayWeek = weekNumberFromDateISO(start, today);
+        const weeks = container.querySelectorAll(".week[data-week]");
+        weeks.forEach((el) => {
+            const n = parseInt(el.getAttribute("data-week") || "0", 10);
+            el.classList.remove("past", "today", "future");
+            el.removeAttribute("aria-current");
+            if (n < todayWeek) {
+                el.classList.add("past");
+            } else if (n === todayWeek) {
+                el.classList.add("today");
+                el.setAttribute("aria-current", "date");
+            } else {
+                el.classList.add("future");
+            }
+        });
+    })();
+</script>
 
 <style>
     .weeks-container {
@@ -263,6 +331,18 @@ if (showBirthdays) {
 
     .week span {
         padding: 0 15px;
+    }
+
+    .week.past {
+        /* Default style */
+    }
+
+    .week.today {
+        /* Default style */
+    }
+
+    .week.future {
+        opacity: 0.45;
     }
 
     .section h3 {
