@@ -273,8 +273,57 @@ if (showBirthdays) {
     }
 </section>
 
-<script type="module">
-    import "/src/scripts/weeks.ts";
+<script>
+    // @ts-nocheck
+    (() => {
+        const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+        function startOfISOWeek(d) {
+            const tmp = new Date(d);
+            tmp.setHours(0, 0, 0, 0);
+            const day = tmp.getDay();
+            const diff = (day + 6) % 7;
+            tmp.setDate(tmp.getDate() - diff);
+            return tmp;
+        }
+        function getStartDate(input) {
+            const d = new Date(input);
+            d.setHours(0, 0, 0, 0);
+            return d;
+        }
+        function weekNumberFromDateISO(startDate, date) {
+            const startMonday = startOfISOWeek(startDate);
+            const dMonday = startOfISOWeek(date);
+            return (
+                Math.floor(
+                    (dMonday.getTime() - startMonday.getTime()) / MS_PER_WEEK
+                ) + 1
+            );
+        }
+
+        const container = document.querySelector(".weeks-container");
+        if (!container) return;
+        const startStr = container.getAttribute("data-start-date");
+        if (!startStr) return;
+        const start = getStartDate(startStr);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const todayWeek = weekNumberFromDateISO(start, today);
+        const weeks = container.querySelectorAll(".week[data-week]");
+        weeks.forEach((el) => {
+            const n = parseInt(el.getAttribute("data-week") || "0", 10);
+            el.classList.remove("past", "today", "future");
+            el.removeAttribute("aria-current");
+            if (n < todayWeek) {
+                el.classList.add("past");
+            } else if (n === todayWeek) {
+                el.classList.add("today");
+                el.setAttribute("aria-current", "date");
+            } else {
+                el.classList.add("future");
+            }
+        });
+    })();
 </script>
 
 <style>
