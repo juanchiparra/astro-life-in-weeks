@@ -332,34 +332,10 @@
         "tooltip": "Morbi in sem quis dui placerat ornare."
     },
     {
-        "week": 1675,
-        "text": "Ullamco laboris nisi",
-        "style": "special",
-        "tooltip": "Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue."
-    },
-    {
-        "week": 1705,
-        "text": "Ut aliquip ex",
-        "style": "special2",
-        "tooltip": "Euismod in, pharetra a, ultricies in, diam. Sed arcu."
-    },
-    {
         "week": 1735,
         "text": "Ea commodo consequat",
         "style": "highlight",
         "tooltip": "Cras consequat. Praesent dapibus, neque id cursus faucibus."
-    },
-    {
-        "week": 1765,
-        "text": "Duis aute irure",
-        "style": "special",
-        "tooltip": "Morbi in sem quis dui placerat ornare. Pellentesque odio nisi."
-    },
-    {
-        "week": 1795,
-        "text": "Dolor in reprehenderit",
-        "style": "special2",
-        "tooltip": "Curabitur pretium tincidunt lacus. Nulla gravida orci a odio."
     },
     {
         "week": 1825,
@@ -368,33 +344,9 @@
         "tooltip": "Nullam varius, turpis et commodo pharetra, est eros bibendum elit."
     },
     {
-        "week": 1855,
-        "text": "Esse cillum dolore",
-        "style": "special",
-        "tooltip": "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices."
-    },
-    {
-        "week": 1885,
-        "text": "Eu fugiat nulla",
-        "style": "special2",
-        "tooltip": "Suspendisse potenti. Sed egestas, ante et vulputate volutpat."
-    },
-    {
         "week": 1915,
         "text": "Pariatur excepteur sint",
         "style": "highlight",
         "tooltip": "Quisque porta. Vivamus euismod urna id eros."
-    },
-    {
-        "week": 1945,
-        "text": "Occaecat cupidatat non",
-        "style": "special",
-        "tooltip": "Morbi in sem quis dui placerat ornare."
-    },
-    {
-        "week": 1975,
-        "text": "Proident sunt in",
-        "style": "special2",
-        "tooltip": "Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue."
     }
 ]
