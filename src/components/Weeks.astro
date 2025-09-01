@@ -1,6 +1,5 @@
 ---
 import type { WeekItem, SectionItem } from "../types";
-import weeks from "../scripts/weeks.ts?url";
 import {
     MS_PER_WEEK,
     getStartDate as utilGetStartDate,
@@ -274,7 +273,9 @@ if (showBirthdays) {
     }
 </section>
 
-<script type="module" src={weeks}></script>
+<script type="module">
+    import "/src/scripts/weeks.ts";
+</script>
 
 <style>
     .weeks-container {
